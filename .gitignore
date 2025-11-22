@@ -2,3 +2,5 @@ nba_data.csv
 __pycache__/
 kaggle_odds_combined.csv
 kaggle_data/
+*.csv
+.ipynb_checkpoints/
