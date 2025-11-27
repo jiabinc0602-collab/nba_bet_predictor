@@ -21,3 +21,7 @@ Instead of discarding the signal, I inverted it. The model is now deployed as a 
 * **Data Engineering:** `nba_api`, Pandas (Rolling Time-Series Windows)
 * **Modeling:** Scikit-Learn (Random Forest Classifier)
 * **Feature Engineering:** Four Factors (Rebounding/Turnover Mismatches), "Chaos" Metrics.
+
+**Data**
+* **NBA API:** https://github.com/swar/nba_api
+* **Kaggle:** Used for betting lines: https://www.kaggle.com/datasets/thedevastator/uncovering-hidden-trends-in-nba-betting-lines-20
