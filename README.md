@@ -26,7 +26,7 @@ A machine learning pipeline that predicts NBA game outcomes against the spread b
 ## 🛠 Methodology
 1.  **Data Ingestion:**
     * `nba_api` for granular player-level game logs (2017-Present).
-    * Kaggle dataset for historical betting odds (Spread, Moneyline).
+    * <a href="https://www.kaggle.com/datasets/thedevastator/uncovering-hidden-trends-in-nba-betting-lines-20" target="_blank">Kaggle dataset</a> for historical betting odds (Spread, Moneyline).
 2.  **Feature Engineering:**
     * **Time-Series Shifts:** strict `.shift(1)` logic to prevent data leakage (no future peeking).
     * **Mirror Strategy:** Self-merging the dataframe to align Opponent Stats vs. Team Stats in a single row.
