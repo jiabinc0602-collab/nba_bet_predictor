@@ -1,6 +1,6 @@
 # NBA Betting Analyzer (V3): Active Roster & Matchup Engine
 
-A machine learning pipeline that predicts NBA game outcomes against the spread by analyzing the specific impact of **active players** rather than generic team averages.
+A machine learning pipeline that predicts NBA game outcomes against the spread by analyzing the specific impact of **active players** on a roster rather than generic team averages.
 
 **Current Status:** Phase 3 Complete (Feature Engineering & Profitability Validation) ✅
 
@@ -18,7 +18,7 @@ A machine learning pipeline that predicts NBA game outcomes against the spread b
     * **Roster Impact Score:** Sum of rolling Plus/Minus for active players only.
     * **Chaos Mismatch:** (Active Steals + Opponent Turnovers) vs. (Active Turnovers + Opponent Steals).
     * **Schedule Fatigue:** Automated "Back-to-Back" detection.
-* **Result:** Accuracy jumped to **~56%** on high-confidence bets (>60% prob).
+* **Result:** Accuracy jumped to **~56.5%** on high-confidence bets (>65% prob), which yields a **6.8% ROI**.
 * **Verdict:** The model is now a **Value Predictor** (betting *with* the signal) rather than a contrarian indicator.
 
 
@@ -26,7 +26,7 @@ A machine learning pipeline that predicts NBA game outcomes against the spread b
 ## 🛠 Methodology
 1.  **Data Ingestion:**
     * `nba_api` for granular player-level game logs (2017-Present).
-    * Kaggle dataset for historical betting odds (Spread, Moneyline).
+    * <a href="https://www.kaggle.com/datasets/thedevastator/uncovering-hidden-trends-in-nba-betting-lines-20" target="_blank">Kaggle dataset</a> for historical betting odds (Spread, Moneyline).
 2.  **Feature Engineering:**
     * **Time-Series Shifts:** strict `.shift(1)` logic to prevent data leakage (no future peeking).
     * **Mirror Strategy:** Self-merging the dataframe to align Opponent Stats vs. Team Stats in a single row.
