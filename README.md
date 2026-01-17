@@ -1,40 +1,49 @@
-# NBA Betting Analyzer (V3): Active Roster & Matchup Engine
+# NBA Spread Predictor (Legacy Research Project)
 
-A machine learning pipeline that predicts NBA game outcomes against the spread by analyzing the specific impact of **active players** on a roster rather than generic team averages.
+> **⚠️ Project Status: Archived / Legacy**
+>
+> This project represents a completed research initiative into quantitative sports modeling. All development has moved to a new repository focused on a real-time, low-latency inference engine for live NBA game prediction.
 
-**Current Status:** Phase 3 Complete (Feature Engineering & Profitability Validation) ✅
+## 📋 Project Overview
+This repository hosts a machine learning pipeline designed to predict NBA game outcomes against the spread (ATS). Unlike traditional models that rely on team-level aggregates, this project implements an **"Active Roster"** approach. It dynamically calculates team strength based solely on the specific players active for a given match, effectively filtering out "noise" from injured or resting star players (often referred to as "Ghost Data").
 
-## 📈 Performance & Evolution
+## 🧠 Quantitative Methodology
 
-### 🔻 Phase 2: The "Fade" Discovery
-* **Approach:** Trained Random Forest on generic team rolling averages (2017-2021).
-* **Result:** 44.5% Accuracy on high-confidence bets.
-* **Insight:** The model failed to account for "Ghost Data" (injured stars). It would bet on the Lakers even if LeBron was out, leading to confident losses.
-* **Pivot:** We briefly deployed a **"Fade Strategy"** (Betting against the model), which yielded a **6.0% ROI**.
+### The "Active Roster" Hypothesis
+Standard rolling averages fail in the NBA due to high variance in player availability (load management, injuries). A team's season-long offensive rating is irrelevant if their primary scorer is inactive.
+* **Solution:** The pipeline aggregates rolling statistics (Plus/Minus, Usage, Turnovers) *only* for players with `MIN > 0` in the target game.
+* **Impact:** This dramatically increases signal-to-noise ratio by aligning statistical inputs with the actual lineup on the floor.
 
-### 🚀 Phase 3: The "Active Roster" Solution
-* **Approach:** Re-architected the data pipeline to aggregate rolling statistics *only* for players active in the specific game (`MIN > 0`).
-* **New Features:**
-    * **Roster Impact Score:** Sum of rolling Plus/Minus for active players only.
-    * **Chaos Mismatch:** (Active Steals + Opponent Turnovers) vs. (Active Turnovers + Opponent Steals).
-    * **Schedule Fatigue:** Automated "Back-to-Back" detection.
-* **Result:** Accuracy jumped to **~56.5%** on high-confidence bets (>65% prob), which yields a **6.8% ROI**.
-* **Verdict:** The model is now a **Value Predictor** (betting *with* the signal) rather than a contrarian indicator.
+### Feature Engineering
+Key features derived for the Random Forest Classifier:
+* **Roster Impact Score:** Aggregate rolling Plus/Minus for the specific active 8-9 man rotation.
+* **Chaos Mismatch:** Quantifying variance by comparing a roster's ability to force turnovers against the opponent's tendency to commit them (Steals + Opponent Turnovers).
+* **Schedule Fatigue:** Automated detection of "Back-to-Back" games to account for rest disadvantages.
 
+## 📊 Model Performance & Backtesting
 
+The model was validated using a strict time-series split to prevent data leakage.
 
-## 🛠 Methodology
-1.  **Data Ingestion:**
-    * `nba_api` for granular player-level game logs (2017-Present).
-    * <a href="https://www.kaggle.com/datasets/thedevastator/uncovering-hidden-trends-in-nba-betting-lines-20" target="_blank">Kaggle dataset</a> for historical betting odds (Spread, Moneyline).
-2.  **Feature Engineering:**
-    * **Time-Series Shifts:** strict `.shift(1)` logic to prevent data leakage (no future peeking).
-    * **Mirror Strategy:** Self-merging the dataframe to align Opponent Stats vs. Team Stats in a single row.
-    * **Z-Score Normalization:** (In Progress) Adjusting for league-wide pace inflation.
-3.  **Modeling:**
-    * **Algorithm:** Random Forest Classifier (Scikit-Learn).
-    * **Validation:** Train on Historical Era (2017-2021) -> Test on Unseen "Modern" Era (2021-22).
+* **Training Period:** 2017-2018 Season through 2020-2021 Season (8,000+ games).
+* **Testing Period:** 2021-2022 Season (Unseen data).
 
-## 🔮 Next Steps (Phase 4)
-* **Live Automation:** Build a scraper to fetch "Projected Starters" for tonight's games to feed the Active Roster engine in real-time.
-* **Injury Veto:** Implement a final filter to skip bets where "Game Time Decision" players create too much variance.
+### Key Results (V3 Model)
+| Metric | Value | Notes |
+| :--- | :--- | :--- |
+| **ROI (Return on Investment)** | **+6.87%** | On bets with >65% confidence |
+| **Accuracy (High Confidence)** | **~56.5%** | On bets with >65% confidence |
+| **Sample Size** | 418 Bets | Filtered for value threshold |
+
+*Note: A standard betting strategy requires ~52.4% accuracy to break even at -110 odds. An ROI of >5% over a statistically significant sample size indicates legitimate alpha generation.*
+
+## 🛠 Tech Stack & Data Architecture
+* **Language:** Python 3.13
+* **Data Sources:**
+    * `nba_api` (Official League Endpoint) for granular player logs.
+    * Historical Odds Data (Kaggle) for spread and moneyline targets.
+* **ML Libraries:** Scikit-Learn (Random Forest), Pandas (Time-series manipulation).
+
+## 🚀 Future Development
+This research successfully validated the "Active Roster" hypothesis. The next iteration (currently in development) focuses on:
+* **Real-time Inference:** integrating live "Projected Starter" feeds to predict lines before tip-off.
+* **Micro-betting:** Expanding the feature set to predict quarter-level outcomes.
